@@ -137,27 +137,6 @@ test_data_set(sequence, 0.001, 0.001, 0.01,
 [[1,12], [2,56], [3,182], [4,462], [5,992]], [p,n]).
 
 /*
-com.highfleet.pique,169,29,55,43,0.17,0.44,0.39,1
-com.highfleet.pique.builtin,52,2,10,23,0.04,0.7,0.26,1
-com.highfleet.pique.builtin.admin,53,3,2,29,0.06,0.94,0.01,1
-*/
-/*
-test_data_set(jdepend, 0.001, 0.001, 0.01,
-[
-[1,6,24,21],
-[0,2,2,5],
-[0,3,4,4],
-[1,0,10,3],
-[3,2,3,4],
-[0,1,20,5],
-[0,4,13,3],
-[7,1,7,2],
-[15,3,17,3],
-[18,6,24,2]
-],
-[abstract_class_count, ca, class_count, ce]).
-*/
-/*
 Following calculations used in defining data for ohm2.  The ohm2 procedure is used to generate the data in the ohm2 test_data_set.
 
 LI = aI + b
