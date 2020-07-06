@@ -1,10 +1,6 @@
 :- object(compat).
 
-:- public([append/3,writeseqnl/1,writenl/1]).
-
-append([], L, L).
-append([H|T], L, [H|R]) :-
-    append(T, L, R).
+:- public([writeseqnl/1,writenl/1]).
 
 writeseqnl([]) :- nl.
 writeseqnl([H|T]) :-

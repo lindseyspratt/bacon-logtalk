@@ -2,6 +2,8 @@
 
 :- public([consider_monotonic/10, extend_test_values/9]).
 
+:- uses(list, [append/3]).
+
 /*----------------------------------------------------------------------------------
  * CONSIDER_MONOTONIC(+TestValuesIn, +VariablesIn, +CalculationsIn, +TotalVariables,
  *                    +TotalCalculations, -TestValuesOut, -VariablesOut,
@@ -34,7 +36,7 @@ check_monotonic([TestValues|OtherTestValues], EvaluationsIn, EvaluationsOut, New
           pairwise_expansion::pairwise_expansion(TestValues, ExpandedTestValues),
           check_test_monotonic(ExpandedTestValues, EvaluationsIn, EvaluationsNext,
                                LocalNewTestValues),
-          compat::append(LocalNewTestValues, OtherNewTestValues, NewTestValues),
+          append(LocalNewTestValues, OtherNewTestValues, NewTestValues),
           check_monotonic(OtherTestValues, EvaluationsNext, EvaluationsOut, OtherNewTestValues).
 
 
@@ -227,14 +229,14 @@ extend_test_values(TestValues, Variables, Calculations, [], [], _,
 extend_test_values([], VariablesIn, CalculationsIn, NewVariables,
                    NewCalculations, _, [], VariablesOut , CalculationsOut ) :-
           NewVariables \= [],
-          compat::append(VariablesIn, NewVariables, VariablesOut),
-          compat::append(CalculationsIn, NewCalculations, CalculationsOut).
+          append(VariablesIn, NewVariables, VariablesOut),
+          append(CalculationsIn, NewCalculations, CalculationsOut).
 
 extend_test_values([TestValuesIn|OtherTestValuesIn], VariablesIn, CalculationsIn,
                    NewVariables, NewCalculations, [NewTestValues|OtherNewTestValues],
                    [TestValuesOut|OtherTestValuesOut], VariablesOut , CalculationsOut) :-
           NewVariables \= [],
-          compat::append(TestValuesIn, NewTestValues, TestValuesOut),
+          append(TestValuesIn, NewTestValues, TestValuesOut),
           extend_test_values(OtherTestValuesIn, VariablesIn, CalculationsIn,
                              NewVariables, NewCalculations, OtherNewTestValues,
                              OtherTestValuesOut, VariablesOut , CalculationsOut).

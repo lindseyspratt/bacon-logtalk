@@ -38,19 +38,8 @@ cpu_time(N, Goal, Duration) :-
   cpu_time((ct_repeat(N), (true -> fail;true); true), D2),
   Duration is D1 - D2.
 
-:- if(current_logtalk_flag(prolog_dialect, swi)).
-
-    % SWI-Prolog specific code
-    cpu_time(Time) :-
-      statistics(cputime, Time).
-
-:- elif(current_logtalk_flag(prolog_dialect, gnu)).
-
-    % GNU Prolog
-    cpu_time(Time) :-
-      statistics(cpu_time, [Time, _]).
-
-:- endif.
+cpu_time(Time) :-
+	os::cpu_time(Time).
 
 ct_repeat(N) :-
   integer(N),
