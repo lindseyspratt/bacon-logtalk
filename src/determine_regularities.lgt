@@ -1,6 +1,8 @@
 :- object(determine_regularities).
 :- public([determine_regularities/6]).
 
+:- uses(list, [append/3, length/2]).
+
 test_determine_regularities(SetName, X,Y) :-
           test_data_set::test_data_set(SetName, ConstantTolerance, LinearTolerance, ProportionalTolerance,
                         DataTree, Variables),
@@ -53,12 +55,12 @@ determine_regularities1([PairTestValues|OtherPairTestValues],
           interesting_regularities::interesting_regularities(VariablePair, RegularValues, RegularVariables,
                                    PossibleFinalValues, PossibleFinalVariables),
           (PossibleFinalVariables = []
-             -> compat::append(RegularValues, OtherFinalValues, FinalValues),
-                compat::append(RegularVariables, OtherFinalVariables, FinalVariables),
+             -> append(RegularValues, OtherFinalValues, FinalValues),
+                append(RegularVariables, OtherFinalVariables, FinalVariables),
                 _ = PossibleFinalValues
           ;
-          compat::append(PossibleFinalValues, OtherFinalValues, FinalValues),
-          compat::append(PossibleFinalVariables, OtherFinalVariables, FinalVariables)
+          append(PossibleFinalValues, OtherFinalValues, FinalValues),
+          append(PossibleFinalVariables, OtherFinalVariables, FinalVariables)
           ),
           determine_regularities1(OtherPairTestValues, OtherVariablePairs,
                                   MaximumSearchVariables, ConstantTolerance, LinearTolerances,
@@ -83,7 +85,7 @@ determine_regularities2(TestValues, VariablesIn,
           infer_linear::infer_linear(TrimmedTestValues1, TrimmedDependentVariables1, LinearTolerances,
                        TotalVariables, TotalCalculations, LinearVariables,
                        InterimValues1-InterimValues2, InterimVariables1-InterimVariables2),
-          compat::append(ConstantVariables, LinearVariables, ConsumedVariables),
+          append(ConstantVariables, LinearVariables, ConsumedVariables),
           (VariablesIn = [IndependentVariable|_],
            choose::choose(ConsumedVariables, ConsumedVariable),
            interesting_regularities::depends_on(ConsumedVariable, IndependentVariable)
@@ -118,11 +120,11 @@ determine_regularities2(TestValues, VariablesIn,
                   _ = SequenceCalculations
              ;
               _ = ConsumedVariables,
-              compat::append(TotalVariables, MonotonicVariables, InterimTotalVariables),
-              compat::append(TotalCalculations, MonotonicCalculations,
+              append(TotalVariables, MonotonicVariables, InterimTotalVariables),
+              append(TotalCalculations, MonotonicCalculations,
                      InterimTotalCalculations),
-              compat::append(InterimTotalVariables, SequenceVariables, NextTotalVariables),
-              compat::append(InterimTotalCalculations, SequenceCalculations,
+              append(InterimTotalVariables, SequenceVariables, NextTotalVariables),
+              append(InterimTotalCalculations, SequenceCalculations,
                      NextTotalCalculations),
               determine_regularities2(TestValues4, Variables4,
                                       MaximumSearchVariables,

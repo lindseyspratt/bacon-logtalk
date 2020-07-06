@@ -10,7 +10,7 @@ that is the same for all of the rows in the table.
 The general topic is discussed at https://plato.stanford.edu/entries/scientific-discovery/:
 
 I originally implemented this version of bacon in 1990's in MacProlog32, then ported that to XGP. 
-This is a port to Logtalk for either SWI-Prolog or GNU Prolog backends.
+This is a port to Logtalk for any Prolog backend.
 
 There are several examples defined in test_data_set.lgt. You can list their names by 'setof(ID, bacon_loader::bacon_test_id(ID), IDs)'.
 
