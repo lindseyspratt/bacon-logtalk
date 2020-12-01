@@ -70,24 +70,51 @@ display_time(Duration) :-
  * FIND_LAWS(+Trees, +VariablesIN, +RegularitiesTolerances, -VariablesOUT, -ReducedData)
  *-------------------------------------------------------------
  *
- * find_laws/5 analyzes the data in Trees, as described by VariablesIN, putting the result of the analysis in VariablesOUT and ReducedData.
+ * find_laws/5 analyzes the data in Trees, as described by VariablesIN,
+ * putting the result of the analysis in VariablesOUT and ReducedData.
 
-The Tree in the Trees list has the form 'ParentValue-ChildValues', a path through the tree (from parent to child) produces the data for a single "experiment". The simple hierarchical structure of the data Trees can provide significant compression of the data representation of a set of experiments.
+The Tree in the Trees list has the form 'ParentValue-ChildValues',
+a path through the tree (from parent to child) produces the data for
+a single "experiment". The simple hierarchical structure of the data
+Trees can provide significant compression of the data representation of a set of experiments.
 
-find_laws/5 analyses Trees by recursing on the ChildValues (and ChildVariables) (the first clause), or by invoking determine_regularities/4. Broadly speaking, find_laws/5 reduces Trees of experimental data to a single relationship among the VariablesIN. It performs this reduction "bottom up" by reducing the bottom subtree of each tree of Trees to a single value (applying the same reduction to comparable subtrees in different trees), then reprocessing the "reduced" Trees by reducing the new bottom subtrees, until all of the Trees have been reduced.
+find_laws/5 analyses Trees by recursing on the ChildValues (and ChildVariables)
+(the first clause), or by invoking determine_regularities/4.
+Broadly speaking, find_laws/5 reduces Trees of experimental data to a single relationship among
+the VariablesIN. It performs this reduction "bottom up" by reducing the bottom
+subtree of each tree of Trees to a single value (applying the same reduction to
+comparable subtrees in different trees), then reprocessing the "reduced" Trees
+by reducing the new bottom subtrees, until all of the Trees have been reduced.
 
-Consider the first clause. It recursively invokes find_laws/5 at two points. The first recursion produces ChildVariablesOut and NewChildValues. The NewChildValues can be derived values based on ChildValues.
+Consider the first clause. It recursively invokes find_laws/5 at two points.
+The first recursion produces ChildVariablesOut and NewChildValues.
+The NewChildValues can be derived values based on ChildValues.
 
-find_laws_extend_branches/4 applies the analysis of ChildValues to OtherTrees, repeating the calculation of any newly "invented" child variables for the child values in OtherTrees. This process does NOT produce any new (child) variable definitions. The result of this process is the OtherReducedTrees.
+find_laws_extend_branches/4 applies the analysis of ChildValues to OtherTrees,
+repeating the calculation of any newly "invented" child variables for the child
+values in OtherTrees. This process does NOT produce any new (child) variable definitions.
+The result of this process is the OtherReducedTrees.
 
-If ChildVariablesOut is of the form A-B, then there is at least one more "level" of the tree below this one. In this case, NextVariables = [ParentVariable|ThisLevelVariables]. If there was NOT another "level" of the data Trees below this one (i.e. the recursive invocation of find_laws/5 used the second clause, which invoked determine_regularities/4), then NextVariables = [ParentVariable|ChildVariablesOut].
+If ChildVariablesOut is of the form A-B, then there is at least one more "level"
+of the tree below this one. In this case, NextVariables = [ParentVariable|ThisLevelVariables].
+If there was NOT another "level" of the data Trees below this one
+(i.e. the recursive invocation of find_laws/5 used the second clause, which invoked determine_regularities/4),
+then NextVariables = [ParentVariable|ChildVariablesOut].
 
-Finally, this first clause invokes find_laws/5 on the "flattened" form of the input Tree. This recursive call will use the second clause of find_laws/5.
+Finally, this first clause invokes find_laws/5 on the "flattened" form of
+the input Tree. This recursive call will use the second clause of find_laws/5.
 
+The second clause for find_laws/5 is invoked when the Tree (DataSet)
+consists of a list of (pair) lists. Each of these contained lists
+is a single experiment's data of two values, an "independent" value
+and a "dependent" value. The dependent value is presumed to be some
+function of the independent value. It is this function that
+determine_regularities/5 is intended to find. This analysis may create
+new variables by combining values of old ones, this is reflected in NewValues and VariablesOut.
 
-The second clause for find_laws/5 is invoked when the Tree (DataSet) consists of a list of (pair) lists. Each of these contained lists is a single experiment's data of two values, an "independent" value and a "dependent" value. The dependent value is presumed to be some function of the independent value. It is this function that determine_regularities/5 is intended to find. This analysis may create new variables by combining values of old ones, this is reflected in NewValues and VariablesOut.
-
-The third clause for find_laws/5 is the base case, where the Tree (DataSet) is neither a tree of values nor a list of (pair) lists. In this case Trees = ReducedData and VariablesIN = VariablesOUT.
+The third clause for find_laws/5 is the base case, where
+the Tree (DataSet) is neither a tree of values nor a list of (pair) lists.
+In this case Trees = ReducedData and VariablesIN = VariablesOUT.
 -----*/
 
 find_laws([ParentValue-ChildValues|OtherTrees],

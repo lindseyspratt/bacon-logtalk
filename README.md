@@ -14,7 +14,7 @@ This is a port to Logtalk for any Prolog backend.
 
 There are several examples defined in test_data_set.lgt. You can list their names by 'setof(ID, bacon_loader::bacon_test_id(ID), IDs)'.
 
-To run the 'linear' example with SWI-Prolog backend:
+To run the 'linear' example with GNU Prolog backend:
 
 ````
 $ cd <bacon_project_dir>

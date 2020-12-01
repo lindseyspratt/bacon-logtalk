@@ -2,7 +2,8 @@
 :- object(bacon_loader, imports(key_value)).
 
 :- public([
-    bacon_test_id/1, run_test/1, set_test_parameters/1, set_test_parameters/4
+    bacon_test_id/1, run_test/1, set_test_parameters/1, set_test_parameters/4,
+    set_and_run/1
     ]).
 
 bacon_test_id(TestID) :-
@@ -54,5 +55,10 @@ set_test_parameters(ConstantTolerance, LinearTolerance, ProportionalTolerance, M
           ::remember(linear_tolerance, LinearTolerance),
           ::remember(proportional_tolerance, ProportionalTolerance),
           ::remember(maximum_search_variables, MaximumSearchVariables).
+
+set_and_run(TestID) :-
+    set_test_parameters(TestID),
+    run_test(TestID).
+
 
 :- end_object.
